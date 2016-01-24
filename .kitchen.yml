@@ -1,0 +1,31 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: debian-7.8
+  - name: debian-8.2
+
+suites:
+  - name: client
+    run_list:
+      - recipe[t3-rsyslog::client]
+    attributes:
+      rsyslog:
+        server_ip: 192.168.88.102
+    driver_config:
+      network:
+      - ["private_network", {ip: "192.168.88.101"}]
+  - name: server
+    run_list:
+      - recipe[t3-rsyslog::server]
+    attributes:
+    driver_config:
+      network:
+      - ["private_network", {ip: "192.168.88.102"}]
